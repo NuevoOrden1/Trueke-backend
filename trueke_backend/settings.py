@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
@@ -74,8 +75,12 @@ WSGI_APPLICATION = 'trueke_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_trueke',        # <- nombre de la base de datos que crearás
+        'USER': 'postgres',         # <- usuario de PostgreSQL
+        'PASSWORD': 'clave123',         # <- contraseña del usuario
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
