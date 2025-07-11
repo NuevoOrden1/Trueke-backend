@@ -1,7 +1,15 @@
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UsuarioRegistroSerializer
+from .serializers import UsuarioRegistroSerializer, UsuarioSerializer
+from usuarios.models import Usuario
+
+@api_view(['GET'])
+def listar_usuarios(request):
+    usuarios = Usuario.objects.all()
+    serializer = UsuarioSerializer(usuarios, many=True)
+    return Response(serializer.data)
 
 class RegistroUsuarioView(APIView):
     def post(self, request):
