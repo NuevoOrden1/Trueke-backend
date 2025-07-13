@@ -1,0 +1,11 @@
+asgiref==3.9.1
+Django==5.2.4
+setuptools==78.1.1
+sqlparse==0.5.3
+tzdata==2025.2
+wheel==0.45.1
+djangorestframework
+psycopg2-binary
+django-rest-knox   # Para autenticación segura con tokens
+django-cors-headers
+python-decouple

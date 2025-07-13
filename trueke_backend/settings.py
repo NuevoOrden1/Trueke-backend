@@ -37,9 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',# se añadio estas apps en paso 2
+    'corsheaders', # App para manejar CORS
+    "users.apps.UsersConfig",
+    'items',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -102,9 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-pe'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 
@@ -120,3 +125,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# --- CONFIGURACIONES PERSONALIZADAS Trueke - paso 2 ---
+
+# 1. Modelo de Usuario Personalizado
+# Le dice a Django que use tu modelo `CustomUser` en lugar del que viene por defecto.
+AUTH_USER_MODEL = 'users.CustomUser' 
+
+# 2. Configuración de CORS
+# Le dice a tu backend que acepte peticiones desde tu frontend (que corre en localhost:3000).
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000', 
+]
