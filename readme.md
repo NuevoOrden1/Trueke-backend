@@ -11,13 +11,12 @@ Este repositorio contiene el backend del sistema de intercambio de productos **T
 - pip (gestor de paquetes de Python)
 
 
-
 ## Instalación y ejecución local
 
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/tu_usuario/trueke_backend.git
+git clone https://github.com/tu_usuario/trueke_backend
 cd trueke_backend
 ```
 
@@ -60,20 +59,13 @@ python manage.py makemigrations usuarios productos
 python manage.py migrate
 ```
 
-### 6. Crea un superusuario (opcional para panel admin)
-
-```bash
-python manage.py createsuperuser
-```
-
-### 7. Ejecuta el servidor
+### 6. Ejecuta el servidor
 
 ```bash
 python manage.py runserver
 ```
 
 Accede en tu navegador a: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-
 
 
 ## Estructura del proyecto
@@ -88,14 +80,14 @@ trueke_backend/
 └── requirements.txt      # Dependencias del proyecto
 ```
 
-
-
 ## Pruebas con Postman
 
-### Registro de usuario
+### Usuarios
 
-- URL: `POST http://127.0.0.1:8000/api/usuarios/registro/`
-- Body (raw / JSON):
+#### Registrar usuario
+
+- **POST** `/api/usuarios/`
+- **Body (form-data o raw JSON):**
 
 ```json
 {
@@ -103,33 +95,62 @@ trueke_backend/
   "apellido": "Pérez",
   "correo": "juan@example.com",
   "celular": "123456789",
-  "contrasena": "clave123"
+  "password": "clave123"
 }
 ```
 
-### Listar usuarios
+#### Listar usuarios
 
-- URL: `GET http://127.0.0.1:8000/api/usuarios/listar/`
+- **GET** `/api/usuarios/`
 
+### Objetos / Productos
+
+#### Crear objeto
+
+- **POST** `/api/objetos/`
+- **Body (form-data):**
+  - `titulo`
+  - `descripcion`
+  - `categoria`
+  - `imagen` (tipo archivo)
+  - `usuario` (ID del usuario)
+
+#### Listar objetos
+
+- **GET** `/api/objetos/`
+
+#### Obtener un objeto específico
+
+- **GET** `/api/objetos/<id>/`
+
+#### Editar un objeto
+
+- **PUT** `/api/objetos/<id>/`
+- **Body:** (form-data o JSON)
+
+#### Eliminar un objeto
+
+- **DELETE** `/api/objetos/<id>/`
 
 
 ## No subir al repositorio
 
 Asegúrate de que el archivo `.gitignore` contenga lo siguiente:
 
-
+```
 venv/
 __pycache__/
 *.pyc
 *.sqlite3
 media/
 .env
-
+```
 
 ## Notas importantes
 
 - El campo `id` de los modelos se genera automáticamente por Django.
 - El `AUTH_USER_MODEL` ha sido configurado para usar nuestro modelo personalizado de usuario.
-- Aún no se ha implementado la verificación por correo (Google u otro proveedor), pero puede considerarse para producción.
+- La autenticación aún no ha sido implementada (ni login ni tokens).
+- El almacenamiento de imágenes funciona correctamente con la configuración de `MEDIA_URL` y `MEDIA_ROOT`.
 
 

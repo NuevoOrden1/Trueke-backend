@@ -4,11 +4,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UsuarioRegistroSerializer, UsuarioSerializer
 from usuarios.models import Usuario
+from django.shortcuts import get_object_or_404
 
 @api_view(['GET'])
-def listar_usuarios(request):
-    usuarios = Usuario.objects.all()
-    serializer = UsuarioSerializer(usuarios, many=True)
+def obtener_usuario_por_id(request, id):
+    usuario = get_object_or_404(Usuario, pk=id)
+    serializer = UsuarioSerializer(usuario)
     return Response(serializer.data)
 
 class RegistroUsuarioView(APIView):

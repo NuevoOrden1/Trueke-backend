@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import RegistroUsuarioView, listar_usuarios
+from .views import RegistroUsuarioView, obtener_usuario_por_id
 
 urlpatterns = [
-    path('registro/', RegistroUsuarioView.as_view(), name='registro_usuario'),
-    path('listar/', listar_usuarios, name='listar_usuarios'),
+    path('', RegistroUsuarioView.as_view(), name='registro_usuario'),                  # POST /api/usuarios
+    path('<int:id>/', obtener_usuario_por_id, name='obtener_usuario_por_id'),          # GET /api/usuarios/1
 ]
