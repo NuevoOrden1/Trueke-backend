@@ -3,5 +3,5 @@ from .models import Usuario
 
 @admin.register(Usuario)
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre', 'apellido', 'correo', 'celular', 'calificacion_promedio', 'cant_intercambios')
+    list_display = ('id', 'nombre', 'apellido', 'correo', 'celular', 'calificacionPromedio', 'cantIntercambios')
     search_fields = ('nombre', 'apellido', 'correo')

@@ -2,12 +2,16 @@ from rest_framework import serializers
 from .models import Usuario
 
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
+    contraseña = serializers.CharField(write_only=True)
+
     class Meta:
         model = Usuario
-        fields = ['id', 'nombre', 'apellido', 'correo', 'celular', 'password', 'foto_perfil']
+        fields = [
+            'id', 'nombre', 'apellido', 'correo', 'celular',
+            'contraseña', 'fotoPerfil'
+        ]
         extra_kwargs = {
-            'password': {'write_only': True},
-            'foto_perfil': {'required': False, 'allow_null': True}
+            'fotoPerfil': {'required': False, 'allow_null': True}
         }
 
     def create(self, validated_data):
@@ -16,8 +20,8 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
             apellido=validated_data['apellido'],
             correo=validated_data['correo'],
             celular=validated_data['celular'],
-            password=validated_data['password'],
-            foto_perfil=validated_data.get('foto_perfil', None)
+            password=validated_data['contraseña'],  # se usa como 'contraseña' pero se pasa a .set_password()
+            fotoPerfil=validated_data.get('fotoPerfil')
         )
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -25,5 +29,5 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = [
             'id', 'nombre', 'apellido', 'correo', 'celular',
-            'foto_perfil', 'calificacion_promedio', 'cant_intercambios'
+            'fotoPerfil', 'calificacionPromedio', 'cantIntercambios'
         ]

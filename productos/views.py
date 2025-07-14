@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Objeto
 from .serializers import ObjetoSerializer
+from django.shortcuts import get_object_or_404
 
 @api_view(['GET', 'POST'])
 def objetos_view(request):
@@ -10,8 +11,8 @@ def objetos_view(request):
         objetos = Objeto.objects.all()
         serializer = ObjetoSerializer(objetos, many=True, context={'request': request})
         return Response(serializer.data)
-    
-    elif request.method == 'POST':
+
+    elif request.method == 'POST':  # publicar()
         serializer = ObjetoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -19,17 +20,14 @@ def objetos_view(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def obtener_objeto_por_id(request, id):
-    try:
-        objeto = Objeto.objects.get(pk=id)
-    except Objeto.DoesNotExist:
-        return Response({'error': 'Objeto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+def objeto_detalle_view(request, id):
+    objeto = get_object_or_404(Objeto, pk=id)
 
     if request.method == 'GET':
         serializer = ObjetoSerializer(objeto, context={'request': request})
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
+    elif request.method == 'PUT':  # modificar()
         serializer = ObjetoSerializer(objeto, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()

@@ -11,9 +11,9 @@ class UsuarioManager(BaseUserManager):
             nombre=nombre,
             apellido=apellido,
             celular=celular,
-            **extra_fields  # Esto permite aceptar otros campos opcionales como foto_perfil
+            **extra_fields
         )
-        user.set_password(password)
+        user.set_password(password)  # Importante: convierte la contraseña en hash
         user.save(using=self._db)
         return user
 
@@ -29,10 +29,10 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     apellido = models.CharField(max_length=50)
     correo = models.EmailField(unique=True)
     celular = models.CharField(max_length=15)
-    foto_perfil = models.ImageField(upload_to='fotos_perfil/', blank=True, null=True)
-    calificacion_promedio = models.FloatField(default=0)
-    cant_intercambios = models.IntegerField(default=0)
-    
+    fotoPerfil = models.ImageField(upload_to='fotos_perfil/', blank=True, null=True)  # nombre del diagrama
+    calificacionPromedio = models.FloatField(default=0)  # nombre del diagrama
+    cantIntercambios = models.IntegerField(default=0)    # nombre del diagrama
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
