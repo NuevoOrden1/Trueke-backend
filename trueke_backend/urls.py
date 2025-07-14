@@ -27,6 +27,12 @@ urlpatterns = [
     path('api/objetos/', include('productos.urls')),
     # Endpoints para solicitudes de intercambio
     path('api/solicitudes/', include('solicitudes.urls')),
+    # Endpoints para notificaciones
+    path('api/notificaciones/', include('notificaciones.urls')),
+    # Endpoints para moderador
+    path('api/moderacion/', include('moderacion.urls')),
+    # Endpoints para calificaciones
+    path('api/calificaciones/', include('calificaciones.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,23 +1,73 @@
-# Truek-e Backend
+# Truek-e
 
-Este repositorio contiene el backend del sistema de intercambio de productos **Truek-e**, construido con **Django** y **Django REST Framework**. Provee endpoints para el registro de usuarios, publicación de productos y demás funcionalidades de la plataforma.
+Truek-e es una plataforma de intercambio de objetos donde los usuarios pueden publicar productos, enviar y recibir solicitudes de intercambio, calificar a otros usuarios y ser notificados sobre el estado de los intercambios. Además, incluye un sistema de moderación para revisar productos antes de ser publicados.
 
+## Tecnologías utilizadas
 
-## Requisitos previos
+- **Backend**: Django + Django REST Framework
+- **Base de datos**: PostgreSQL
+- **Frontend**: React (en desarrollo)
+- **Autenticación**: Manual (correo y contraseña)
+- **Almacenamiento de imágenes**: Local (`MEDIA_ROOT`)
 
-- Python 3.10 o superior
-- PostgreSQL
-- Git
-- pip (gestor de paquetes de Python)
+## Estructura del backend
 
+- `usuarios/`: Registro, login y perfil de usuario
+- `productos/`: Publicación y gestión de objetos
+- `solicitudes/`: Envío y recepción de solicitudes de intercambio
+- `notificaciones/`: Visualización y gestión de notificaciones
+- `moderacion/`: Revisión y aprobación/rechazo de objetos por moderadores
+- `calificaciones/`: Calificación entre usuarios luego de un intercambio
 
-## Instalación y ejecución local
+## Endpoints principales (resumen)
+
+### Usuarios
+| Acción | Método | Endpoint | Body (JSON) | Respuesta esperada |
+|--------|--------|----------|-------------|---------------------|
+| Registro | POST | `/api/usuarios` | `{nombre, apellido, correo, celular, contraseña}` | `{mensaje}` |
+| Login | POST | `/api/usuarios/login` | `{correo, contraseña}` | `{mensaje, usuario}` |
+| Obtener por ID | GET | `/api/usuarios/:id` | — | `{usuario}` |
+
+### Objetos
+| Acción | Método | Endpoint | Body (JSON) | Respuesta esperada |
+|--------|--------|----------|-------------|---------------------|
+| Listar / Crear | GET / POST | `/api/objetos` | — / `{...}` | Lista / Objeto creado |
+| Ver / Editar / Eliminar | GET / PUT / DELETE | `/api/objetos/:id` | `{...}` | Detalles / Mensaje |
+
+### Intercambios (Solicitudes)
+| Acción | Método | Endpoint | Body (JSON) | Respuesta esperada |
+|--------|--------|----------|-------------|---------------------|
+| Enviar solicitud | POST | `/api/solicitudes` | `{solicitanteId, receptorId, objetoSolicitadoId, objetoPropuestoId}` | `{mensaje, id}` |
+| Ver solicitudes propias | GET | `/api/solicitudes?usuarioId=…` | — | Lista |
+| Cambiar estado | PUT | `/api/solicitudes/:id` | `{estado}` | `{mensaje}` |
+
+### Notificaciones
+| Acción | Método | Endpoint | Body | Respuesta esperada |
+|--------|--------|----------|------|---------------------|
+| Ver notificaciones | GET | `/api/notificaciones/:idUsuario` | — | Lista |
+| Marcar como leída | PUT | `/api/notificaciones/:id/leida` | — | `{mensaje}` |
+
+### Moderación
+| Acción | Método | Endpoint | Body | Respuesta esperada |
+|--------|--------|----------|------|---------------------|
+| Ver objetos pendientes | GET | `/api/moderacion/pendientes` | — | Lista |
+| Aprobar objeto | PUT | `/api/moderacion/aprobar/:id` | — | `{mensaje}` |
+| Rechazar objeto | PUT | `/api/moderacion/rechazar/:id` | `{motivo}` | `{mensaje}` |
+
+### Calificaciones
+| Acción | Método | Endpoint | Body | Respuesta esperada |
+|--------|--------|----------|------|---------------------|
+| Crear calificación | POST | `/api/calificaciones` | `{puntuadorId, puntuadoId, valor, comentario}` | `{mensaje}` |
+| Ver calificaciones usuario | GET | `/api/calificaciones/:idUsuario` | — | Lista |
+| Editar calificación | PUT | `/api/calificaciones/:id` | `{valor, comentario}` | `{mensaje}` |
+
+## Cómo ejecutar el proyecto localmente
 
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/tu_usuario/trueke_backend
-cd trueke_backend
+git clone https://github.com/tu-usuario/trueke-backend.git
+cd trueke-backend
 ```
 
 ### 2. Crea y activa un entorno virtual (venv)
