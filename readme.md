@@ -21,46 +21,68 @@ Truek-e es una plataforma de intercambio de objetos donde los usuarios pueden pu
 
 ## Endpoints principales (resumen)
 
-### Usuarios
-| Acción | Método | Endpoint | Body (JSON) | Respuesta esperada |
-|--------|--------|----------|-------------|---------------------|
-| Registro | POST | `/api/usuarios` | `{nombre, apellido, correo, celular, contraseña}` | `{mensaje}` |
-| Login | POST | `/api/usuarios/login` | `{correo, contraseña}` | `{mensaje, usuario}` |
-| Obtener por ID | GET | `/api/usuarios/:id` | — | `{usuario}` |
+### 1. Gestión de usuarios
 
-### Objetos
-| Acción | Método | Endpoint | Body (JSON) | Respuesta esperada |
-|--------|--------|----------|-------------|---------------------|
-| Listar / Crear | GET / POST | `/api/objetos` | — / `{...}` | Lista / Objeto creado |
-| Ver / Editar / Eliminar | GET / PUT / DELETE | `/api/objetos/:id` | `{...}` | Detalles / Mensaje |
+- **Registro**: `POST /api/usuarios`
+- **Login**: `POST /api/usuarios/login`
+- **Obtener perfil**: `GET /api/usuarios/:id`
+- Campos del usuario: nombre, apellido, correo, celular, contraseña, fotoPerfil
 
-### Intercambios (Solicitudes)
-| Acción | Método | Endpoint | Body (JSON) | Respuesta esperada |
-|--------|--------|----------|-------------|---------------------|
-| Enviar solicitud | POST | `/api/solicitudes` | `{solicitanteId, receptorId, objetoSolicitadoId, objetoPropuestoId}` | `{mensaje, id}` |
-| Ver solicitudes propias | GET | `/api/solicitudes?usuarioId=…` | — | Lista |
-| Cambiar estado | PUT | `/api/solicitudes/:id` | `{estado}` | `{mensaje}` |
-| Ver Intercambios Completados | GET | `/api/solicitudes/completados/:id` | - | - |
+### 2. Publicación de productos
 
-### Notificaciones
-| Acción | Método | Endpoint | Body | Respuesta esperada |
-|--------|--------|----------|------|---------------------|
-| Ver notificaciones | GET | `/api/notificaciones/:idUsuario` | — | Lista |
-| Marcar como leída | PUT | `/api/notificaciones/:id/leida` | — | `{mensaje}` |
+- **Publicar producto**: `POST /api/objetos` (multipart/form-data)
+- **Listar productos**: `GET /api/objetos`
+- **Modificar producto**: `PUT /api/objetos/:id`
+- **Eliminar producto**: `DELETE /api/objetos/:id`
 
-### Moderación
-| Acción | Método | Endpoint | Body | Respuesta esperada |
-|--------|--------|----------|------|---------------------|
-| Ver objetos pendientes | GET | `/api/moderacion/pendientes` | — | Lista |
-| Aprobar objeto | PUT | `/api/moderacion/aprobar/:id` | — | `{mensaje}` |
-| Rechazar objeto | PUT | `/api/moderacion/rechazar/:id` | `{motivo}` | `{mensaje}` |
+### 3. Moderación de productos
 
-### Calificaciones
-| Acción | Método | Endpoint | Body | Respuesta esperada |
-|--------|--------|----------|------|---------------------|
-| Crear calificación | POST | `/api/calificaciones` | `{puntuadorId, puntuadoId, valor, comentario}` | `{mensaje}` |
-| Ver calificaciones usuario | GET | `/api/calificaciones/:idUsuario` | — | Lista |
-| Editar calificación | PUT | `/api/calificaciones/:id` | `{valor, comentario}` | `{mensaje}` |
+- **Ver pendientes**: `GET /api/moderacion/pendientes`
+- **Aprobar producto**: `PUT /api/moderacion/aprobar/:id`
+- **Rechazar producto**: `PUT /api/moderacion/rechazar/:id` con `{ motivo }`
+- Al aprobar o rechazar, se notifica al usuario correspondiente automáticamente.
+
+### 4. Solicitudes de intercambio
+
+- **Enviar solicitud**: `POST /api/solicitudes` con:
+  ```json
+  {
+    "solicitante": ID_usuario,
+    "receptor": ID_usuario,
+    "objetoSolicitado": ID_objeto,
+    "objetoPropuesto": ID_objeto
+  }
+  ```
+- **Ver solicitudes del usuario**: `GET /api/solicitudes?usuarioId=ID`
+  - Devuelve solicitudes enviadas y recibidas
+- **Actualizar estado**: `PUT /api/solicitudes/:id` con `{ "estado": "aceptado" | "rechazado" }`
+- Al aceptar o rechazar, se notifica automáticamente al solicitante.
+
+### 5. Notificaciones
+
+- **Ver notificaciones**: `GET /api/notificaciones/:idUsuario`
+- **Marcar como leída**: `PUT /api/notificaciones/:id/leida`
+- Tipos: `"solicitud"`, `"estado"`, `"moderacion"`
+
+### 6. Calificaciones
+
+- **Crear calificación**: `POST /api/calificaciones` con:
+  ```json
+  {
+    "usuarioPuntuador": ID,
+    "usuarioPuntuado": ID,
+    "valor": int (1–5),
+    "comentario": "texto"
+  }
+  ```
+- **Editar calificación**: `PUT /api/calificaciones/:id`
+- **Ver calificaciones de usuario**: `GET /api/calificaciones/usuario/:id`
+- Se actualiza automáticamente la `calificacionPromedio` y `cantIntercambios` del usuario puntuado.
+
+### 7. Intercambios completados
+
+- **Ver historial**: `GET /api/solicitudes/intercambios-completados?usuarioId=ID`
+- Lista todas las solicitudes aceptadas donde el usuario fue solicitante o receptor.
 
 ## Cómo ejecutar el proyecto localmente
 
@@ -189,7 +211,7 @@ trueke_backend/
 
 ## No subir al repositorio
 
-Asegúrate de que el archivo `.gitignore` contenga lo siguiente:
+El archivo `.gitignore` no tiene que contener lo siguiente:
 
 ```
 venv/
