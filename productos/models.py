@@ -16,6 +16,12 @@ class Objeto(models.Model):
         ('reservado', 'Reservado'),
     ]
 
+    ESTADOS_MODERACION = [
+    ('pendiente', 'Pendiente'),
+    ('aprobado', 'Aprobado'),
+    ('rechazado', 'Rechazado'),
+    ]
+    
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     categoria = models.CharField(max_length=20, choices=CATEGORIAS)
@@ -27,6 +33,8 @@ class Objeto(models.Model):
         on_delete=models.CASCADE,
         related_name='objetos'
     )
+    estadoModeracion = models.CharField(max_length=20, choices=ESTADOS_MODERACION, default='pendiente')
+    motivoRechazo = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre

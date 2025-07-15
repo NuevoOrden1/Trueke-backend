@@ -124,6 +124,9 @@ Accede en tu navegador a: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 trueke_backend/
 ├── usuarios/             # App para gestión de usuarios
 ├── productos/            # App para gestión de objetos/productos
+├── solicitudes/          # App para gestión de solicitudes
+├── moderacion/           # App para gestión del moderador
+├── calificaciones/       # App para gestión de calificaciones de usuario
 ├── trueke_backend/       # Configuración principal del proyecto
 ├── media/                # Carpeta para almacenamiento de imágenes
 ├── manage.py             # Script principal de Django
@@ -145,7 +148,7 @@ trueke_backend/
   "apellido": "Pérez",
   "correo": "juan@example.com",
   "celular": "123456789",
-  "password": "clave123"
+  "contraseña": "clave123"
 }
 ```
 
@@ -159,10 +162,10 @@ trueke_backend/
 
 - **POST** `/api/objetos/`
 - **Body (form-data):**
-  - `titulo`
+  - `nombre`
   - `descripcion`
   - `categoria`
-  - `imagen` (tipo archivo)
+  - `imagenes` (tipo archivo)
   - `usuario` (ID del usuario)
 
 #### Listar objetos

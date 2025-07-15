@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import SolicitudIntercambio
+from notificaciones.models import Notificacion
 from .serializers import (
     SolicitudIntercambioSerializer,
     SolicitudEnviadaSerializer,
@@ -15,7 +16,12 @@ def solicitudes_view(request):
     if request.method == 'POST':
         serializer = SolicitudIntercambioSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            solicitud = serializer.save()
+            Notificacion.objects.create(
+                usuarioDestino=solicitud.receptor,
+                mensaje="Has recibido una nueva solicitud de intercambio",
+                tipo="solicitud"
+            )
             return Response({"mensaje": "Solicitud creada correctamente", "id": serializer.instance.id}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -44,4 +50,10 @@ def actualizar_estado_solicitud(request, id):
 
     solicitud.estado = nuevo_estado
     solicitud.save()
+    mensaje = f"Tu solicitud fue {nuevo_estado}"
+    Notificacion.objects.create(
+        usuarioDestino=solicitud.solicitante,
+        mensaje=mensaje,
+        tipo="estado"
+    )
     return Response({"mensaje": f"Estado actualizado a {nuevo_estado}"}, status=status.HTTP_200_OK)

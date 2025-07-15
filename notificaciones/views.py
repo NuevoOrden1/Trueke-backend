@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 @api_view(['GET'])
 def obtener_notificaciones(request, idUsuario):
-    notificaciones = Notificacion.objects.filter(usuario_id=idUsuario).order_by('-fecha')
+    notificaciones = Notificacion.objects.filter(usuarioDestino=idUsuario).order_by('-fecha')
     serializer = NotificacionSerializer(notificaciones, many=True)
     return Response(serializer.data)
 
