@@ -40,6 +40,7 @@ Truek-e es una plataforma de intercambio de objetos donde los usuarios pueden pu
 | Enviar solicitud | POST | `/api/solicitudes` | `{solicitanteId, receptorId, objetoSolicitadoId, objetoPropuestoId}` | `{mensaje, id}` |
 | Ver solicitudes propias | GET | `/api/solicitudes?usuarioId=…` | — | Lista |
 | Cambiar estado | PUT | `/api/solicitudes/:id` | `{estado}` | `{mensaje}` |
+| Ver Intercambios Completados | GET | `/api/solicitudes/completados/:id` | - | - |
 
 ### Notificaciones
 | Acción | Método | Endpoint | Body | Respuesta esperada |

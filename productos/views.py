@@ -13,6 +13,8 @@ def objetos_view(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':  # publicar()
+        data = request.data.copy()
+        data['estado'] = 'pendiente'  # forzamos estado inicial
         serializer = ObjetoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

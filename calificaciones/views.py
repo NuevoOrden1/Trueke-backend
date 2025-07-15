@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import Calificacion
 from .serializers import CalificacionSerializer
 from django.shortcuts import get_object_or_404
+from .utils import actualizar_promedio
 
 # Crear una calificación
 @api_view(['POST'])
@@ -11,6 +12,7 @@ def crear_calificacion(request):
     serializer = CalificacionSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        actualizar_promedio(serializer.instance.usuarioPuntuado.id)
         return Response({"mensaje": "Calificación creada correctamente"}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -28,5 +30,6 @@ def editar_calificacion(request, id):
     serializer = CalificacionSerializer(calificacion, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
+        actualizar_promedio(serializer.instance.usuarioPuntuado.id)
         return Response({"mensaje": "Calificación actualizada correctamente"})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

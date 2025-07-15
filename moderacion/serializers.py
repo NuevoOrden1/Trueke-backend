@@ -6,13 +6,14 @@ class ModeradorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Moderador
         fields = ['id', 'nombre', 'correo', 'contraseña']
-
+        extra_kwargs = {
+            'contraseña': {'write_only': True}
+        }
 
 class ObjetoPendienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Objeto
         fields = ['id', 'nombre', 'descripcion', 'categoria', 'imagenes', 'estado', 'fechaPublicacion', 'usuario']
-
 
 class RechazoModeracionSerializer(serializers.ModelSerializer):
     class Meta:

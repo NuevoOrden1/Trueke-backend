@@ -46,3 +46,19 @@ class SolicitudRecibidaSerializer(serializers.ModelSerializer):
             'solicitante_nombre',
             'solicitante_apellido'
         ]
+
+class IntercambioCompletadoSerializer(serializers.ModelSerializer):
+    objetoSolicitado_nombre = serializers.CharField(source='objetoSolicitado.nombre', read_only=True)
+    objetoPropuesto_nombre = serializers.CharField(source='objetoPropuesto.nombre', read_only=True)
+    objetoSolicitado_imagen = serializers.ImageField(source='objetoSolicitado.imagenes', read_only=True)
+    objetoPropuesto_imagen = serializers.ImageField(source='objetoPropuesto.imagenes', read_only=True)
+    solicitante_nombre = serializers.CharField(source='solicitante.nombre', read_only=True)
+    receptor_nombre = serializers.CharField(source='receptor.nombre', read_only=True)
+
+    class Meta:
+        model = SolicitudIntercambio
+        fields = [
+            'id', 'estado', 'objetoSolicitado_nombre', 'objetoSolicitado_imagen',
+            'objetoPropuesto_nombre', 'objetoPropuesto_imagen',
+            'solicitante_nombre', 'receptor_nombre', 'fecha'
+        ]

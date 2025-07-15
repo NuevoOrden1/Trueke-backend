@@ -4,6 +4,7 @@ from rest_framework import status
 from productos.models import Objeto
 from .models import RechazoModeracion
 from .serializers import ObjetoPendienteSerializer, RechazoModeracionSerializer
+from notificaciones.models import Notificacion
 from django.shortcuts import get_object_or_404
 
 # Ver objetos pendientes
@@ -23,6 +24,14 @@ def aprobar_objeto(request, id):
 
     objeto.estado = 'disponible'
     objeto.save()
+
+    # Crear notificación de aprobación
+    Notificacion.objects.create(
+        usuarioDestino=objeto.usuario,
+        mensaje=f"Tu objeto '{objeto.nombre}' fue aprobado y ahora está disponible.",
+        tipo='aprobacion'
+    )
+
     return Response({'mensaje': 'Objeto aprobado exitosamente'}, status=status.HTTP_200_OK)
 
 # Rechazar objeto
@@ -42,6 +51,13 @@ def rechazar_objeto(request, id):
 
     rechazo = RechazoModeracion.objects.create(objeto=objeto, motivo=motivo)
     serializer = RechazoModeracionSerializer(rechazo)
+
+    # Crear notificación de rechazo
+    Notificacion.objects.create(
+        usuarioDestino=objeto.usuario,
+        mensaje=f"Tu objeto '{objeto.nombre}' fue rechazado. Motivo: {motivo}",
+        tipo='rechazo'
+    )
 
     return Response({
         'mensaje': 'Objeto rechazado',

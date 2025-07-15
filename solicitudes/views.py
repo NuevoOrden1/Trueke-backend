@@ -9,7 +9,8 @@ from .serializers import (
     SolicitudRecibidaSerializer
 )
 from django.shortcuts import get_object_or_404
-
+from .serializers import IntercambioCompletadoSerializer
+from django.db.models import Q
 
 @api_view(['POST', 'GET'])
 def solicitudes_view(request):
@@ -57,3 +58,18 @@ def actualizar_estado_solicitud(request, id):
         tipo="estado"
     )
     return Response({"mensaje": f"Estado actualizado a {nuevo_estado}"}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def intercambios_completados(request):
+    usuario_id = request.GET.get('usuarioId')
+    if not usuario_id:
+        return Response({'error': 'Debe proporcionar usuarioId'}, status=status.HTTP_400_BAD_REQUEST)
+
+    solicitudes = SolicitudIntercambio.objects.filter(
+        estado='aceptado'
+    ).filter(
+        Q(solicitante__id=usuario_id) | Q(receptor__id=usuario_id)
+    ).order_by('-fecha')
+
+    serializer = IntercambioCompletadoSerializer(solicitudes, many=True, context={'request': request})
+    return Response(serializer.data)
