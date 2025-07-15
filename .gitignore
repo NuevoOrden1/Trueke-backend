@@ -1,5 +1,6 @@
 # Entorno virtual
 venv/
+trueke-env/
 
 # Archivos de Python
 __pycache__/
