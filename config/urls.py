@@ -1,5 +1,5 @@
 """
-URL configuration for trueke_backend project.
+URL configuration for the Trueke project backend..
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
