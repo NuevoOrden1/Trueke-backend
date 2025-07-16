@@ -1,12 +1,17 @@
 from django.shortcuts import render
-
+from .serializers import CustomTokenObtainPairSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import CustomUser
 from .serializers import UserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+#  Vista para login con email en vez de username
+
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserSerializer
+
 
 class VerifyAccountView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
@@ -23,3 +28,7 @@ class VerifyAccountView(generics.GenericAPIView):
         except CustomUser.DoesNotExist:
             return Response({"error": "Usuario no encontrado"}, status.HTTP_404_NOT_FOUND)
 
+
+#  Vista para login con email en vez de username
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Objeto
@@ -15,13 +16,14 @@ def objetos_view(request):
     elif request.method == 'POST':  # publicar()
         data = request.data.copy()
         data['estado'] = 'pendiente'  # forzamos estado inicial
-        serializer = ObjetoSerializer(data=request.data)
+        serializer = ObjetoSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(usuario=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def objeto_detalle_view(request, id):
     objeto = get_object_or_404(Objeto, pk=id)
 

@@ -13,5 +13,5 @@ class ObjetoSerializer(serializers.ModelSerializer):
             'estado',
             'fechaPublicacion',
             'usuario'
-        ]
-        read_only_fields = ['id', 'fechaPublicacion']
+        ]                                          # se añadio usua a read_only
+        read_only_fields = ['id', 'fechaPublicacion', 'usuario']
