@@ -24,3 +24,5 @@ __pycache__/
 *.swp
 .DS_Store
 Thumbs.db
+
+db.sqlite3
