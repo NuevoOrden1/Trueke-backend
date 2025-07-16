@@ -21,9 +21,8 @@ from django.conf.urls.static import static # add por Ods
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include('users.urls')),
     # Endpoints para usuarios
-    path('api/usuarios/', include('usuarios.urls')),
+    path('api/users/', include('users.urls')),
     # Endpoints para objetos/productos
     path('api/objetos/', include('productos.urls')),
     # Endpoints para solicitudes de intercambio

@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     # Apps internas
     "users.apps.UsersConfig",
     'items',
-    'usuarios',
     'productos',
     'solicitudes',
     'notificaciones',
@@ -95,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'db_trueke',        # <- nombre de la base de datos que crearás
         'USER': 'postgres',         # <- usuario de PostgreSQL
-        'PASSWORD': 'clave123',         # <- contraseña del usuario
+        'PASSWORD': 'postgre',         # <- contraseña del usuario
         'HOST': 'localhost',
         'PORT': '5432',
     }

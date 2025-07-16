@@ -1,6 +1,6 @@
 from django.db import models
 from productos.models import Objeto
-from usuarios.models import Usuario
+from users.models import CustomUser
 
 class SolicitudIntercambio(models.Model):
     ESTADOS = [
@@ -11,8 +11,8 @@ class SolicitudIntercambio(models.Model):
         ('Completada', 'Completada'),
     ]
 
-    solicitante = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='solicitudes_enviadas')
-    receptor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='solicitudes_recibidas')
+    solicitante = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='solicitudes_enviadas')
+    receptor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='solicitudes_recibidas')
     objetoSolicitado = models.ForeignKey(Objeto, on_delete=models.CASCADE, related_name='fue_solicitado_en')
     objetoPropuesto = models.ForeignKey(Objeto, on_delete=models.CASCADE, related_name='fue_propuesto_en')
     estado = models.CharField(max_length=20, choices=ESTADOS, default='Enviada')

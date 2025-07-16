@@ -1,11 +1,11 @@
 from django.db import models
-from usuarios.models import Usuario
+from users.models import CustomUser
 
 class Calificacion(models.Model):
     VALORES = [(i, str(i)) for i in range(1, 6)]  # valores del 1 al 5
 
-    puntuador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='calificaciones_realizadas')
-    puntuado = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='calificaciones_recibidas')
+    puntuador = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='calificaciones_realizadas')
+    puntuado = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='calificaciones_recibidas')
     valor = models.IntegerField(choices=VALORES)
     comentario = models.TextField(blank=True, null=True)
     fecha = models.DateTimeField(auto_now_add=True)

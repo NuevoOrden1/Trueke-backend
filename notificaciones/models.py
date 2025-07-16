@@ -1,5 +1,5 @@
 from django.db import models
-from usuarios.models import Usuario
+from users.models import CustomUser
 
 class TipoNotificacion(models.TextChoices):
     SOLICITUD_RECIBIDA = 'SolicitudRecibida', 'SolicitudRecibida'
@@ -8,7 +8,7 @@ class TipoNotificacion(models.TextChoices):
     CALIFICACION_PENDIENTE = 'CalificacionPendiente', 'CalificacionPendiente'
 
 class Notificacion(models.Model):
-    usuarioDestino = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='notificaciones')
+    usuarioDestino = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notificaciones')
     mensaje = models.TextField()
     tipo = models.CharField(max_length=30, choices=TipoNotificacion.choices)
     leida = models.BooleanField(default=False)

@@ -1,5 +1,5 @@
 from django.db.models import Avg
-from usuarios.models import Usuario
+from users.models import CustomUser
 from .models import Calificacion
 
 def actualizar_promedio(usuario_id):
