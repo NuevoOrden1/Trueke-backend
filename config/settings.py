@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 # Application definition
 
@@ -37,10 +39,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Apps externas
     'rest_framework',# se añadio estas apps en paso 2
     'corsheaders', # App para manejar CORS
+    
+    # Apps internas
     "users.apps.UsersConfig",
     'items',
+    'usuarios',
+    'productos',
+    'solicitudes',
+    'notificaciones',
+    'moderacion',
+    'calificaciones',
+
 ]
 
 MIDDLEWARE = [
@@ -79,8 +92,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_trueke',        # <- nombre de la base de datos que crearás
+        'USER': 'postgres',         # <- usuario de PostgreSQL
+        'PASSWORD': 'clave123',         # <- contraseña del usuario
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -126,15 +143,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# === CONFIGURACIONES PERSONALIZADAS ===
 
-# --- CONFIGURACIONES PERSONALIZADAS Trueke - paso 2 ---
-
-# 1. Modelo de Usuario Personalizado
-# Le dice a Django que use tu modelo `CustomUser` en lugar del que viene por defecto.
-AUTH_USER_MODEL = 'users.CustomUser' 
-
-# 2. Configuración de CORS
-# Le dice a tu backend que acepte peticiones desde tu frontend (que corre en localhost:3000).
+# CORS
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000', 
+    'http://localhost:3000',
 ]
+
+# Modelo de usuario personalizado (elige uno y comenta el otro según el que realmente estás usando)
+AUTH_USER_MODEL = 'users.CustomUser'
+# AUTH_USER_MODEL = 'usuarios.Usuario'  # Si no usas el de `users`, comenta o elimina esta línea
+
+# Archivos subidos
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

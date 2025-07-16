@@ -1,3 +1,4 @@
+
 # Entorno virtual
 venv/
 trueke-env/
@@ -6,8 +7,9 @@ trueke-env/
 __pycache__/
 *.py[cod]
 
-# Base de datos local
+# Base de datos
 *.sqlite3
+db.sqlite3
 
 # Archivos de entorno
 .env
@@ -15,14 +17,19 @@ __pycache__/
 # Archivos de log
 *.log
 
-# Configs de IDEs (VS Code, PyCharm, etc.)
-.vscode/
-.idea/
-
 # Archivos temporales
 *.bak
 *.swp
 .DS_Store
 Thumbs.db
 
-db.sqlite3
+# Configs de IDEs (VS Code, PyCharm, etc.)
+.vscode/
+.idea/
+
+# Media y uploads
+media/
+
+# Carpeta para pruebas locales
+objetos/
+

@@ -16,9 +16,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings # add por Ods
+from django.conf.urls.static import static # add por Ods
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
+    # Endpoints para usuarios
+    path('api/usuarios/', include('usuarios.urls')),
+    # Endpoints para objetos/productos
+    path('api/objetos/', include('productos.urls')),
+    # Endpoints para solicitudes de intercambio
+    path('api/solicitudes/', include('solicitudes.urls')),
+    # Endpoints para notificaciones
+    path('api/notificaciones/', include('notificaciones.urls')),
+    # Endpoints para moderador
+    path('api/moderacion/', include('moderacion.urls')),
+    # Endpoints para calificaciones
+    path('api/calificaciones/', include('calificaciones.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
